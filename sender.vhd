@@ -1,0 +1,31 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+
+ENTITY sender IS
+	PORT(
+		position			: IN STD_LOGIC_VECTOR(15 downto 0);
+		data_out			: OUT STD_LOGIC;
+		sck				: IN STD_LOGIC;
+		data_read		: IN STD_LOGIC
+		);
+END ENTITY;
+
+ARCHITECTURE logic OF sender IS
+  SIGNAL position_latch	: STD_LOGIC_VECTOR(15 downto 0);
+BEGIN
+  
+  --posílání dat
+  PROCESS(sck, data_read, position)
+  BEGIN
+    IF(data_read = '0') THEN
+	   position_latch <= position;
+	 ELSIF(rising_edge(sck)) THEN
+	   data_out <= position_latch(15);
+	   FOR i IN 0 to 14 LOOP
+			position_latch(15-i) <= position_latch(14-i);
+		END LOOP;
+	 END IF;
+  END PROCESS;
+
+  
+END ARCHITECTURE;
