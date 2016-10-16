@@ -31,7 +31,7 @@ begin
 			clk_out => ClkDivided_kb
 		);
 	
-	cEncoder: entity work.decoder(logic)
+	cDecoder: entity work.decoder(logic)
 		port map (
 			clk => ClkDivided_k(10),
 			reset => Reset_ir,
