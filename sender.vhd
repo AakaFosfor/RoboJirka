@@ -14,7 +14,7 @@ ARCHITECTURE logic OF sender IS
   SIGNAL position_latch	: STD_LOGIC_VECTOR(15 downto 0);
 BEGIN
   
-  --posílání dat
+  --posilani dat
   PROCESS(sck, data_read, position)
   BEGIN
     IF(data_read = '0') THEN

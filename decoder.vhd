@@ -18,7 +18,7 @@ ARCHITECTURE logic OF decoder IS
   SIGNAL pulse		: STD_LOGIC;
   SIGNAL dir		: STD_LOGIC;
 BEGIN
-  --synchronizace pulzů s hodinama
+  --synchronizace pulzu s hodinama
   PROCESS(clk)
   BEGIN
     IF(rising_edge(clk)) THEN
@@ -33,7 +33,7 @@ BEGIN
 	 END IF;
   END PROCESS;
 
-  --počítání pulzů
+  --pocitani pulzu
   PROCESS(pulse, dir, reset)
   BEGIN
     IF(reset = '0') THEN
