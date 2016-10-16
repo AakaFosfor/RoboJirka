@@ -12,21 +12,20 @@ ENTITY sender IS
 END ENTITY;
 
 ARCHITECTURE logic OF sender IS
-  SIGNAL position_latch	: STD_LOGIC_VECTOR(15 downto 0);
+	SIGNAL position_latch	: STD_LOGIC_VECTOR(15 downto 0);
 BEGIN
-  
-  --posilani dat
-  PROCESS(sck, data_read, position)
-  BEGIN
-    IF(data_read = '0') THEN
-	   position_latch <= std_logic_vector(position);
-	 ELSIF(rising_edge(sck)) THEN
-	   data_out <= position_latch(15);
-	   FOR i IN 0 to 14 LOOP
-			position_latch(15-i) <= position_latch(14-i);
-		END LOOP;
-	 END IF;
-  END PROCESS;
+	
+	--posilani dat
+	PROCESS(sck, data_read, position)
+	BEGIN
+		IF(data_read = '0') THEN
+			position_latch <= std_logic_vector(position);
+		ELSIF(rising_edge(sck)) THEN
+			data_out <= position_latch(15);
+			FOR i IN 0 to 14 LOOP
+				position_latch(15-i) <= position_latch(14-i);
+			END LOOP;
+		END IF;
+	END PROCESS;
 
-  
 END ARCHITECTURE;
