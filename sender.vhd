@@ -1,9 +1,10 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 ENTITY sender IS
 	PORT(
-		position			: IN STD_LOGIC_VECTOR(15 downto 0);
+		position			: IN unsigned(15 downto 0);
 		data_out			: OUT STD_LOGIC;
 		sck				: IN STD_LOGIC;
 		data_read		: IN STD_LOGIC
@@ -18,7 +19,7 @@ BEGIN
   PROCESS(sck, data_read, position)
   BEGIN
     IF(data_read = '0') THEN
-	   position_latch <= position;
+	   position_latch <= std_logic_vector(position);
 	 ELSIF(rising_edge(sck)) THEN
 	   data_out <= position_latch(15);
 	   FOR i IN 0 to 14 LOOP

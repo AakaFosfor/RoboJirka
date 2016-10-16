@@ -1,5 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity top is
 	port(
@@ -20,7 +21,7 @@ end entity;
 architecture rtl of top is
 
 	signal ClkDivided_kb: std_logic_vector(11 downto 0);
-	signal Position_b: std_logic_vector(15 downto 0);
+	signal Position_b: unsigned(15 downto 0);
 
 begin
 
@@ -47,6 +48,6 @@ begin
 			data_read => Data_o
 		);
 
-	Leds_ob <= Position_b(4 downto 2);
+	Leds_ob <= std_logic_vector(Position_b(4 downto 2));
 
 end architecture;
