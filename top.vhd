@@ -21,7 +21,7 @@ end entity;
 architecture rtl of top is
 	
 	constant c_ClkDividedPosition: integer := 10;
-	constant c_PositionWidth: integer := 16;
+	constant c_PositionWidth: integer := 32;
 
 	signal ClkDivided_b: std_logic_vector(11 downto 0);
 	signal Position_b: unsigned(c_PositionWidth-1 downto 0);
