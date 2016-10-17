@@ -3,12 +3,15 @@ USE ieee.std_logic_1164.all;
 USE ieee.numeric_std.all;
 
 ENTITY decoder IS
+	generic (
+		g_PositionWidth: integer
+	);
 	PORT(
 		clk			: IN	STD_LOGIC;
 		Enable_i: in std_logic;
 		encoder_A	: IN	STD_LOGIC;
 		encoder_B	: IN	STD_LOGIC;
-		position	: OUT unsigned(15 downto 0) := (OTHERS => '0');
+		position	: OUT unsigned(g_PositionWidth-1 downto 0) := (OTHERS => '0');
 		reset		: IN	STD_LOGIC
 	);
 END decoder;
@@ -16,7 +19,7 @@ END decoder;
 ARCHITECTURE logic OF decoder IS
 	SIGNAL A			: STD_LOGIC_VECTOR(3 downto 0);
 	SIGNAL B			: STD_LOGIC_VECTOR(3 downto 0);
-	SIGNAL count		: unsigned(15 downto 0) := (OTHERS => '0');
+	SIGNAL count		: unsigned(g_PositionWidth-1 downto 0) := to_unsigned(0, g_PositionWidth);
 	SIGNAL pulse		: STD_LOGIC;
 	SIGNAL dir		: STD_LOGIC;
 	signal CountEnable: std_logic;

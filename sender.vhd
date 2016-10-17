@@ -3,9 +3,12 @@ USE ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 ENTITY sender IS
+	generic (
+		g_PositionWidth: integer
+	);
 	PORT(
 		Clk_ik: in std_logic;
-		position			: IN unsigned(15 downto 0);
+		position			: IN unsigned(g_PositionWidth-1 downto 0);
 		data_out			: OUT STD_LOGIC;
 		sck				: IN STD_LOGIC;
 		data_read		: IN STD_LOGIC
@@ -13,7 +16,7 @@ ENTITY sender IS
 END ENTITY;
 
 ARCHITECTURE logic OF sender IS
-	SIGNAL position_latch	: STD_LOGIC_VECTOR(15 downto 0);
+	SIGNAL position_latch	: STD_LOGIC_VECTOR(g_PositionWidth-1 downto 0);
 	signal SckSynced, DataReadSynced: std_logic;
 	signal SckEdge: std_logic;
 BEGIN
@@ -51,8 +54,8 @@ BEGIN
 	pSendingData: process (Clk_ik) is begin
 		if rising_edge(Clk_ik) then
 			if SckEdge = '1' then
-				data_out <= position_latch(15);
-				position_latch <= position_latch(14 downto 0) & '0';
+				data_out <= position_latch(g_PositionWidth-1);
+				position_latch <= position_latch(g_PositionWidth-2 downto 0) & '0';
 			end if;
 		end if;
 	end if;

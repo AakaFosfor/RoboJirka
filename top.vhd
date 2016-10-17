@@ -21,9 +21,10 @@ end entity;
 architecture rtl of top is
 	
 	constant c_ClkDividedPosition: integer := 10;
+	constant c_PositionWidth: integer := 16;
 
 	signal ClkDivided_b: std_logic_vector(11 downto 0);
-	signal Position_b: unsigned(15 downto 0);
+	signal Position_b: unsigned(c_PositionWidth-1 downto 0);
 	signal Enable: std_logic;
 
 begin
@@ -42,6 +43,9 @@ begin
 		);
 	
 	cDecoder: entity work.decoder(logic)
+		generic map (
+			g_PositionWidth => c_PositionWidth
+		)
 		port map (
 			clk => Clk50_ik,
 			Enable_i => Enable,
@@ -52,6 +56,9 @@ begin
 		);
 	
 	cSender: entity work.sender(logic)
+		generic map (
+			g_PositionWidth => c_PositionWidth
+		)
 		port map (
 			Clk_ik => Clk50_ik,
 			position => Position_b,
