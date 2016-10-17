@@ -32,7 +32,7 @@ BEGIN
 	dir <= A(3) XOR B(2);
 
 	--pocitani pulzu
-	PROCESS(pulse, dir, reset)
+	PROCESS(pulse, reset)
 	BEGIN
 		IF(reset = '0') THEN
 			count <= to_unsigned(0, count'length);
