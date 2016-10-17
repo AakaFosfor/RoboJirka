@@ -5,6 +5,7 @@ USE ieee.numeric_std.all;
 ENTITY decoder IS
 	PORT(
 		clk			: IN	STD_LOGIC;
+		Enable_i: in std_logic;
 		encoder_A	: IN	STD_LOGIC;
 		encoder_B	: IN	STD_LOGIC;
 		position	: OUT unsigned(15 downto 0) := (OTHERS => '0');
@@ -18,30 +19,37 @@ ARCHITECTURE logic OF decoder IS
 	SIGNAL count		: unsigned(15 downto 0) := (OTHERS => '0');
 	SIGNAL pulse		: STD_LOGIC;
 	SIGNAL dir		: STD_LOGIC;
+	signal CountEnable: std_logic;
 BEGIN
 	--synchronizace pulzu s hodinama
 	PROCESS(clk)
 	BEGIN
 		IF(rising_edge(clk)) THEN
-			A <= A(2 downto 0) & encoder_A;
-			B <= B(2 downto 0) & encoder_B;
+			if Enable_i = '1' then
+				A <= A(2 downto 0) & encoder_A;
+				B <= B(2 downto 0) & encoder_B;
+			end if;
 		END IF;
 	END PROCESS;
 
 	pulse <= A(3) XOR A(2) XOR B(3) XOR B(2);
 	dir <= A(3) XOR B(2);
+	
+	CountEnable <= Enable_i and pulse;
 
 	--pocitani pulzu
-	PROCESS(pulse, reset)
+	PROCESS(clk, reset)
 	BEGIN
 		IF(reset = '0') THEN
 			count <= to_unsigned(0, count'length);
-		ELSIF(rising_edge(pulse)) THEN
-			IF(dir = '1') THEN
-				count <= count + '1';
-			ELSE
-				count <= count - '1';
-			END IF;
+		ELSIF(rising_edge(clk)) THEN
+			if CountEnable = '1' then
+				IF(dir = '1') THEN
+					count <= count + '1';
+				ELSE
+					count <= count - '1';
+				END IF;
+			end if;
 		END IF;
 	END PROCESS;
 

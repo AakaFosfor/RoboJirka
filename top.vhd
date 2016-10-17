@@ -19,21 +19,32 @@ entity top is
 end entity;
 
 architecture rtl of top is
+	
+	constant c_ClkDividedPosition: integer := 10;
 
-	signal ClkDivided_kb: std_logic_vector(11 downto 0);
+	signal ClkDivided_b: std_logic_vector(11 downto 0);
 	signal Position_b: unsigned(15 downto 0);
+	signal Enable: std_logic;
 
 begin
 
 	cDivider: entity work.divider
 		port map (
 			clk_in => Clk50_ik,
-			clk_out => ClkDivided_kb
+			clk_out => ClkDivided_b
+		);
+	
+	cEnableGenerator: entity work.EdgeDetector(rising)
+		port map (
+			Clk_ik => Clk50_ik,
+			Signal_i => ClkDivided_b(c_ClkDividedPosition),
+			Edge_o => Enable
 		);
 	
 	cDecoder: entity work.decoder(logic)
 		port map (
-			clk => ClkDivided_k(10),
+			clk => Clk50_ik,
+			Enable_i => Enable,
 			reset => Reset_ir,
 			encoder_a => EncA_i,
 			encoder_b => EncB_i,
@@ -42,6 +53,7 @@ begin
 	
 	cSender: entity work.sender(logic)
 		port map (
+			Clk_ik => Clk50_ik,
 			position => Position_b,
 			data_out => Data_o,
 			sck => Sck_ik,
