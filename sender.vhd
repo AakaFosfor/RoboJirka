@@ -22,9 +22,7 @@ BEGIN
 			position_latch <= std_logic_vector(position);
 		ELSIF(rising_edge(sck)) THEN
 			data_out <= position_latch(15);
-			FOR i IN 0 to 14 LOOP
-				position_latch(15-i) <= position_latch(14-i);
-			END LOOP;
+			position_latch <= position_latch(14 downto 0) & '0';
 		END IF;
 	END PROCESS;
 
